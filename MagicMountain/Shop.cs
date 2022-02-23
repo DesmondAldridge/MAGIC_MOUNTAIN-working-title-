@@ -9,7 +9,6 @@ namespace MagicMountain
     class Shop : Building
     {
         protected Item[] wares = new Item[4];
-        protected bool open = false;
 
         protected int Opens;
         protected int Closes;
@@ -46,6 +45,17 @@ namespace MagicMountain
         public bool GetOpen()
         {
             return open;
+        }
+
+        public void SetOpen(string _OpenOrClose)
+        {
+            if(_OpenOrClose == "open")
+            {
+                open = true;
+            } else if(_OpenOrClose == "close")
+            {
+                open = false;
+            }
         }
 
         public void SetWares(Item _item1, Item _item2, Item _item3, Item _item4)

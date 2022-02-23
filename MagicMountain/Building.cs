@@ -8,6 +8,7 @@ namespace MagicMountain
 {
     class Building : Area
     {
+        protected bool open = false;
         Place myOutside;
         public Building()
         {

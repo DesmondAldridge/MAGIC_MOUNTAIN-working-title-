@@ -102,8 +102,6 @@ namespace MagicMountain
                 Plots[num] = null;
                 RotateCrops(num);
                 CheckIfEmpty();
-
-                return SelectedCrop;
             }
             else
             {
@@ -121,7 +119,7 @@ namespace MagicMountain
             {
                 if (Plots[i] != null)
                 {
-                    Console.WriteLine($"{Plots[i].GetName()}");
+                    Console.Write($" |{Plots[i].GetName()}|");
                 }
             }
 

@@ -8,7 +8,7 @@ namespace MagicMountain
 {
     class Wilderness : Area
     {
-
+        bool thisIsWilderness = false;
         public Wilderness()
         {
             areaID = "Area";
@@ -151,9 +151,16 @@ namespace MagicMountain
                     AreaItems[2] = goddessFlower;
                 }
             }
+        }
 
+        public bool GetWilderness()
+        {
+            return thisIsWilderness;
+        }
 
-
+        public void SetWilderness()
+        {
+            thisIsWilderness = true;
         }
     }
 }

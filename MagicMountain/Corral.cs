@@ -292,7 +292,7 @@ namespace MagicMountain
             }
         }
 
-        public Livestock SelectCrop(int num)
+        public Livestock SelectStock(int num)
         {
             Livestock SelectedStock = null;
 
@@ -302,8 +302,6 @@ namespace MagicMountain
                 stock[num] = null;
                 CorralStock(num);
                 CheckIfEmpty();
-
-                return SelectedStock;
             }
             else
             {
@@ -313,7 +311,7 @@ namespace MagicMountain
             return SelectedStock;
         }
 
-        public void ViewPlots()
+        public void ViewStock()
         {
             Console.Write("I have:");
 
@@ -321,7 +319,7 @@ namespace MagicMountain
             {
                 if (stock[i] != null)
                 {
-                    Console.WriteLine($"{stock[i].GetName()}");
+                    Console.WriteLine($" |{stock[i].GetName()}|");
                 }
             }
         }

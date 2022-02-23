@@ -9,11 +9,19 @@ namespace MagicMountain
     class Area
     {
         protected string areaID;
+        protected string areaDescription;
         protected int availItems;
         protected bool shopping = false;
         protected Item[] AreaItems = null;
 
-
+        public string GetDescription()
+        {
+            return areaDescription;
+        }
+        public void SetDescription(string _description)
+        {
+            areaDescription = _description;
+        }
 
         //ITEMS METHODS
         public int GetAvailItems()

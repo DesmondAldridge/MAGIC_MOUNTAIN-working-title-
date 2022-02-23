@@ -21,6 +21,7 @@ namespace MagicMountain
         bool morning;
         bool night;
         string clock;
+        char timeSym = '⌛';
         char moon = '☽';
         char sun = '☀';
         char currentSky;
@@ -41,43 +42,93 @@ namespace MagicMountain
         bool thawl;
         string currentSeason;
 
+        //PLAYER VARIABLES
+        Player player = new Player();
+        string thoughts = "💭";
+        string currentView;
+
+        string PermaOptions = "Please Choose: '1' Eat, '2' Drink, '3' Cancel";
+
+        //string MakingSelection = "Scroll through by pressing '8' & hit enter to select";
+        //string Selected;
+        //string Option1;
+        //string Option2;
+        //string Option3;
+        //string Option4;
+        //string Option5;
+        //string Option6;
+        //string Option7;
+        //string Option8;
+        //string Option9;
+
+        //OPTIONS VARIABLES
+        string currentOptions;
+
         //LOCATION VARIABLES
         Area currentArea;
         Area previousArea;
         Place outside;
+
         //Wilderness
         int areaCounter = 0;
         Area[] areaArray = new Area[10];
-        //bool firstArea = true;
+        bool inWilderness = false;
+
+        string WildernessOptions = "Please Choose: '1' Go west into more wilderness, '2' Go east the way you came, '3' View nearby items, '4' Forage item, '5' Refresh";
 
         //HOME VARIABLES
         Place Home = new Place();
         Building Homestead = new Building();
         Building Grotto = new Building();
-        Garden Garden = new Garden();
+        Garden HomeGarden = new Garden();
+        Corral HomeCorral = new Corral();
+
+        string HomeOptions = "Please Choose: '1' Enter your home, '2' Enter your garden, '3' Enter your corral, '4' Enter woods, '5' Refresh";
+        string HomeSteadOptions = "Please Choose: '1' Go to bed, '2' Exit home, '3' Refresh";
+        string GardenOptions = "Please Choose: '1' View garden, '2' Water your crops, '3' Plant a seed, '4' Harvest a crop, '5' Exit garden, '6' Refresh";
+        string CorralOptions = "Please Choose: '1' View corral, '2' Stable new stock, '3' Take an animal with you, '4' Exit corral, '5' Refresh";
+
+        string GardenSecondaryOptions = $"Please select which seed you would like plant: ";
+        string GardenTertiaryOptions = $"Please select which crop you would like to harvest: ";
+        string CorralSecondaryOptions = $"Please select which animal you would like stable: ";
+        string CorralTertiaryOptions = $"Please select which animal you would like to take with you: ";
 
         //WOODS VARIABLES
         Place CrossTrail = new Place();
-        //Place EdgeOfWilderness = new Place();
+
+        string CrossTrailOptions = "Please Choose: '1' Go west into the wilderness, '2' Go north into town, '3' Go south back home";
 
         //RAVEN FEATHER VILLAGE
         //Bottom & Top
         Place BlackwingStreet = new Place();
         Place Uptown = new Place();
 
+        string BlackwingStreetOptions = "Please Choose: '1' Enter Cauldron Way, '2' Enter Main Street, '3' Enter Night Garden Lane, '4' Exit town due south";
+        string UptownOptions;
+
         //West, Mid, & East
         Place CauldronWay = new Place();
         Place MainStreet = new Place();
         Place NightGardenLane = new Place();
-        
+
+        string CauldronWayOptions = "Please Choose: '1' Apocathery, '2' Head uptown, '3' Head south back to Blackwing Street";
+        string MainStreetOptions = "Please Choose: '1' Head uptown, '2' Head south back to Blackwing Street";
+        string NightGardenLaneOptions = "Please Choose: '1' Head uptown, '2' Head south back to Blackwing Street";
+
         //Cauldron Way
         Shop Stables = new Shop();
         Shop Apocathery = new Shop();
 
+        string ApocatheryOptions = "Please Choose: '1' Buy items, '2' Sell items, '3' Exit apocathery";
+
         //North of Town
         Place FaeRiverBridge = new Place();
         Place Arbor = new Place();
-        Building UnicornRanch = new Building();
+        Ranch UnicornRanch = new Ranch();
+
+        string FaeRiverBridgeOptions;
+        string ArboOptions;
+        string UnicornRanchOptions;
 
         public bool GetIsPlaying()
         {
@@ -86,67 +137,21 @@ namespace MagicMountain
 
         public void Play()
         {
-            //currentArea = Apocathery;
-            //EnterBuilding(Apocathery);
-            //WhereAmI();
-            //ExitBuilding();
-
-            //WhereAmI();
-            //ExitBuilding();
-            //WhereAmI();
-            CrossTrail.SetAreaID("Cross Trail");
 
             
-            CreateArea();
-            WhereAmI();
-            CreateArea();
-            WhereAmI();
-            CreateArea();
-            WhereAmI();
-            CreateArea();
-            WhereAmI();
-            CreateArea();
-            WhereAmI();
-            CreateArea();
-            WhereAmI();
-            CreateArea();
-            WhereAmI();
-            CreateArea();
-            WhereAmI();
-            CreateArea();
-            WhereAmI();
-            CreateArea();
-            WhereAmI();
-            CreateArea();
-            WhereAmI();
 
+            
 
-            GoBack();
-            WhereAmI();
-            GoBack();
-            WhereAmI();
-            GoBack();
-            WhereAmI();
-            GoBack();
-            WhereAmI();
-            GoBack();
-            WhereAmI();
-            GoBack();
-            WhereAmI();
-            GoBack();
-            WhereAmI();
-            GoBack();
-            WhereAmI();
-            GoBack();
-            WhereAmI();
-            GoBack();
-            WhereAmI();
 
 
 
         }
 
-
+        //SETUP
+        public void SetUpCrossTrail()
+        {
+            CrossTrail.SetAreaID("Cross Trail");
+        }
         public void BuildWorld()
         {
             Home.SetAreaID("Home");
@@ -160,11 +165,141 @@ namespace MagicMountain
 
         }
 
+        public void UpdateDisplay()
+        {
+            Console.Clear();
+            Console.WriteLine($"{timeSym} {clock}");
+            Console.WriteLine($"{currentSky} {currentWeather}");
+            Console.WriteLine();
+            Console.WriteLine($"Current Location: {currentArea.GetAreaID()}");
+            Console.WriteLine($"{currentArea.GetDescription()}");
+            Console.WriteLine();
+            Console.WriteLine($"{thoughts} {player.GetReaction()}");
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine($" Computer                     cards()");
+        }
+
+        public void DisplayOptions()
+        {
+            ToTheBottom();
+            if(currentArea == Home)
+            {
+                OptionsHome();
+            }
+            if (currentArea == Homestead)
+            {
+                OptionsHomestead();
+            }
+            if (currentArea == HomeGarden)
+            {
+                OptionsGarden();
+            }
+            if (currentArea == HomeCorral)
+            {
+                OptionsCorral();
+            }
+            if (currentArea == CrossTrail)
+            {
+                OptionsCrossTrail();
+            }
+            if(inWilderness == true)
+            {
+                OptionsWilderness();
+            }
+            if (currentArea == BlackwingStreet)
+            {
+                OptionsBlackwingStreet();
+            }
+            if (currentArea == MainStreet)
+            {
+                OptionsMainStreet();
+            }
+            if (currentArea == NightGardenLane)
+            {
+                OptionsNightGardenLane();
+            }
+            if (currentArea == Apocathery)
+            {
+                OptionsApocathery();
+            }
+            if (currentArea == FaeRiverBridge)
+            {
+                OptionsFaeRiverBridge();
+            }
+            if (currentArea == Arbor)
+            {
+                OptionsArbor();
+            }
+            if (currentArea == UnicornRanch)
+            {
+                OptionsUnicornRanch();
+            }
+            if (currentArea == UnicornRanch)
+            {
+                OptionsUnicornRanch();
+            }
+        }
 
 
-        
+        //OPTIONS METHODS
+        public void OptionsHome()
+        {
 
-        
+        }
+        public void OptionsHomestead()
+        {
+
+        }
+        public void OptionsGarden()
+        {
+
+        }
+        public void OptionsCorral()
+        {
+
+        }
+        public void OptionsCrossTrail()
+        {
+
+        }
+        public void OptionsWilderness()
+        {
+
+        }
+        public void OptionsBlackwingStreet()
+        {
+
+        }
+        public void OptionsMainStreet()
+        {
+
+        }
+        public void OptionsNightGardenLane()
+        {
+
+        }
+        public void OptionsApocathery()
+        {
+
+        }
+        public void OptionsFaeRiverBridge()
+        {
+
+        }
+        public void OptionsArbor()
+        {
+
+        }
+        public void OptionsUnicornRanch()
+        {
+
+        }
+
+
+
+
+
         //public void EnterPlace(Place _place)
         //{
         //    currentArea = _place;
@@ -199,6 +334,8 @@ namespace MagicMountain
                 areaArray[areaCounter - 1] = createdArea;
                 currentArea = createdArea;
 
+                inWilderness = true;
+
                 //if (firstArea == true)
                 //{
                 //    createdArea.SetOutside(CrossTrail);
@@ -207,11 +344,11 @@ namespace MagicMountain
                 //    createdArea.SetOutside(previousArea);
                 //}
 
-                SetTime();
+                Action();
             }
             else
             {
-                Console.WriteLine("Too tired to explore new places.");
+                thoughts = "Too tired to explore new places.";
             }
         }
 
@@ -224,12 +361,13 @@ namespace MagicMountain
             if (destinationID < 0)
             {
                 currentArea = CrossTrail;
-                SetTime();
+                inWilderness = false;
+                Action();
             }
             else
             {
                 currentArea = areaArray[destinationID];
-                SetTime();
+                Action();
             }
         }
 
@@ -255,6 +393,7 @@ namespace MagicMountain
             }
 
             SetClock();
+            SetSky();
         }
 
         public void SetClock()
@@ -366,7 +505,7 @@ namespace MagicMountain
             SetWeather();
             SetSky();
 
-            if(day == 32)
+            if (day == 32)
             {
                 NewMonth();
             }
@@ -447,63 +586,84 @@ namespace MagicMountain
         //    }
         //}
 
+        public void ToTheBottom()
+        {
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+        }
+
         void EndGame()
         {
             isPlaying = false;
         }
 
+        public void myDeBug()
+        {
+            //currentArea = Apocathery;
+            //EnterBuilding(Apocathery);
+            //WhereAmI();
+            //ExitBuilding();
 
-        //        CreateArea();
-        //        Console.WriteLine($"I am in area {currentArea.GetAreaID()}");
-        //CreateArea();
-        //        Console.WriteLine($"I am in area {currentArea.GetAreaID()}");
-        //CreateArea();
-        //        Console.WriteLine($"I am in area {currentArea.GetAreaID()}");
-        //CreateArea();
-        //        Console.WriteLine($"I am in area {currentArea.GetAreaID()}");
-        //CreateArea();
-        //        Console.WriteLine($"I am in area {currentArea.GetAreaID()}");
-        //CreateArea();
-        //        Console.WriteLine($"I am in area {currentArea.GetAreaID()}");
-        //CreateArea();
-        //        Console.WriteLine($"I am in area {currentArea.GetAreaID()}");
-        //CreateArea();
-        //        Console.WriteLine($"I am in area {currentArea.GetAreaID()}");
-        //CreateArea();
-        //        Console.WriteLine($"I am in area {currentArea.GetAreaID()}");
-        //CreateArea();
-        //        Console.WriteLine($"I am in area {currentArea.GetAreaID()}");
-        //CreateArea();
+            //WhereAmI();
+            //ExitBuilding();
+            //WhereAmI();
 
-        //        GoBack();
-        //        Console.WriteLine($"I am in area {currentArea.GetAreaID()}");
-        //GoBack();
-        //        Console.WriteLine($"I am in area {currentArea.GetAreaID()}");
-        //Console.WriteLine();
-        //Console.WriteLine($"By the way, there are {areaArray[6].GetAvailItems()} items in area {areaArray[6].GetAreaID()}");
-        //Console.WriteLine($"But {areaArray[5].GetAvailItems()} items in area {areaArray[5].GetAreaID()}.");
-        //Console.WriteLine();
-        //currentArea = areaArray[6];
-        //Console.WriteLine($"Oh look I'm back in area {currentArea.GetAreaID()}, and there are still only {currentArea.GetAvailItems()} items here.");
-        //Console.WriteLine($"Oh look I'm back in area {currentArea.GetAreaID()}, and there are still only {currentArea.GetAvailItems()} items here.");
-        //Console.WriteLine($"Oh look I'm back in area {currentArea.GetAreaID()}, and there are still only {currentArea.GetAvailItems()} items here.");
-        //Console.WriteLine();
-        //Console.WriteLine($"It's {clock} o'clock");
-        //Console.WriteLine(midnight);
-        //Console.WriteLine(noon);
-        //GoBack();
-        //        Console.WriteLine(noon);
-        //Console.WriteLine($"It's {clock} o'clock");
+            
+
+            //CreateArea();
+            //WhereAmI();
+            //CreateArea();
+            //WhereAmI();
+            //CreateArea();
+            //WhereAmI();
+            //CreateArea();
+            //WhereAmI();
+            //CreateArea();
+            //WhereAmI();
+            //CreateArea();
+            //WhereAmI();
+            //CreateArea();
+            //WhereAmI();
+            //CreateArea();
+            //WhereAmI();
+            //CreateArea();
+            //WhereAmI();
+            //CreateArea();
+            //WhereAmI();
+            //CreateArea();
+            //WhereAmI();
 
 
-
-        //Console.WriteLine($"There are {testArea.GetAvailItems()} items available");
-        //testArea.SetAvailItems();
-        //testArea.SetAvailItems();
-        //testArea.SetAvailItems();
-        //testArea.SetAvailItems();
-        //testArea.SetAvailItems();
-        //testArea.SetAvailItems();
-        //Console.WriteLine($"There are {testArea.GetAvailItems()} items available");
+            //GoBack();
+            //WhereAmI();
+            //GoBack();
+            //WhereAmI();
+            //GoBack();
+            //WhereAmI();
+            //GoBack();
+            //WhereAmI();
+            //GoBack();
+            //WhereAmI();
+            //GoBack();
+            //WhereAmI();
+            //GoBack();
+            //WhereAmI();
+            //GoBack();
+            //WhereAmI();
+            //GoBack();
+            //WhereAmI();
+            //GoBack();
+            //WhereAmI();
+        }
     }
 }
