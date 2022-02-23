@@ -33,6 +33,7 @@ namespace MagicMountain
         bool BagFull = false;
         bool BagEmpty = true;
         int Purse = 0;
+        Livestock OnLead = null;
 
         //FOR DISPLAY
         string Reaction;

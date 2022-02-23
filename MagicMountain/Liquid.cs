@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MagicMountain
 {
-    class Liquid
+    class Liquid : Item
     {
         protected int hydro;
         protected bool potable;

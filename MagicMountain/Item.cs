@@ -8,10 +8,11 @@ namespace MagicMountain
 {
     internal class Item
     {
-        protected string name;
-        protected int nutrition;
-        protected bool edible;
-        protected int price;
+        protected string name = "";
+        protected int nutrition = 0;
+        protected bool edible = false;
+        protected int BuyPrice = 0;
+        protected int SellPrice = 0;
 
         public string GetName()
         {
@@ -28,9 +29,10 @@ namespace MagicMountain
             return nutrition;
         }
 
-        public int GetPrice()
-        {
-            return price;
-        }
+        public int GetBuyPrice() { return BuyPrice; }
+        public int GetSellPrice() { return SellPrice; }
+
+        public void SetBuyPrice(int _BuyPrice) { BuyPrice = _BuyPrice; }
+        public void SetSellPrice(int _SellPrice) { SellPrice = _SellPrice; }
     }
 }
