@@ -44,19 +44,21 @@ namespace MagicMountain
         //LOCATION VARIABLES
         Area currentArea;
         Area previousArea;
+        Place outside;
         //Wilderness
         int areaCounter = 0;
         Area[] areaArray = new Area[10];
-        bool firstArea = true;
+        //bool firstArea = true;
 
         //HOME VARIABLES
         Place Home = new Place();
         Building Homestead = new Building();
         Building Grotto = new Building();
+        Garden Garden = new Garden();
 
         //WOODS VARIABLES
         Place CrossTrail = new Place();
-        Place EdgeOfWilderness = new Place();
+        //Place EdgeOfWilderness = new Place();
 
         //RAVEN FEATHER VILLAGE
         //Bottom & Top
@@ -69,19 +71,92 @@ namespace MagicMountain
         Place NightGardenLane = new Place();
         
         //Cauldron Way
-        Building Stables = new Building();
-        Building Apocathery = new Building();
+        Shop Stables = new Shop();
+        Shop Apocathery = new Shop();
 
         //North of Town
         Place FaeRiverBridge = new Place();
         Place Arbor = new Place();
         Building UnicornRanch = new Building();
 
+        public bool GetIsPlaying()
+        {
+            return isPlaying; 
+        }
+
+        public void Play()
+        {
+            //currentArea = Apocathery;
+            //EnterBuilding(Apocathery);
+            //WhereAmI();
+            //ExitBuilding();
+
+            //WhereAmI();
+            //ExitBuilding();
+            //WhereAmI();
+            CrossTrail.SetAreaID("Cross Trail");
+
+            
+            CreateArea();
+            WhereAmI();
+            CreateArea();
+            WhereAmI();
+            CreateArea();
+            WhereAmI();
+            CreateArea();
+            WhereAmI();
+            CreateArea();
+            WhereAmI();
+            CreateArea();
+            WhereAmI();
+            CreateArea();
+            WhereAmI();
+            CreateArea();
+            WhereAmI();
+            CreateArea();
+            WhereAmI();
+            CreateArea();
+            WhereAmI();
+            CreateArea();
+            WhereAmI();
+
+
+            GoBack();
+            WhereAmI();
+            GoBack();
+            WhereAmI();
+            GoBack();
+            WhereAmI();
+            GoBack();
+            WhereAmI();
+            GoBack();
+            WhereAmI();
+            GoBack();
+            WhereAmI();
+            GoBack();
+            WhereAmI();
+            GoBack();
+            WhereAmI();
+            GoBack();
+            WhereAmI();
+            GoBack();
+            WhereAmI();
+
+
+
+        }
+
 
         public void BuildWorld()
         {
-            EdgeOfWilderness.SetAreaID("wildernessEdge");
+            Home.SetAreaID("Home");
+            CrossTrail.SetAreaID("Cross Trail");
+
+            CauldronWay.SetAreaID("Cauldron Way");
             Apocathery.SetAreaID("Apocathery");
+            UnicornRanch.SetAreaID("Unicorn Ranch");
+            Apocathery.SetOutside(CauldronWay);
+
 
         }
 
@@ -90,37 +165,30 @@ namespace MagicMountain
         
 
         
-        
+        //public void EnterPlace(Place _place)
+        //{
+        //    currentArea = _place;
+        //}
 
-
-
-        void Exit()
+        public void EnterBuilding(Building _building)
         {
-            currentArea = currentArea.GetOutside();
+            previousArea = currentArea;
+            outside = _building.GetOutside();
+            currentArea = _building;
         }
 
-        void WhereAmI()
+        public void ExitBuilding()
+        {
+            currentArea = outside;
+        }
+
+        public void WhereAmI()
         {
             Console.WriteLine(currentArea.GetAreaID());
         }
 
-        void WhatsOutside()
-        {
-            Console.WriteLine(currentArea.GetOutside().GetAreaID());
-        }
-
-//        currentArea = apocathery;
-
-
-//Console.WriteLine(edgeOfWilderness.GetAvailItems());
-//Console.WriteLine(currentArea.GetAvailItems());
-
-//Area[] areaArray = new Area[10];
-
-
-
         // MAP METHODS
-        void CreateArea()
+        public void CreateArea()
         {
             areaCounter++;
             if (areaCounter < 11)
@@ -131,13 +199,13 @@ namespace MagicMountain
                 areaArray[areaCounter - 1] = createdArea;
                 currentArea = createdArea;
 
-                if (firstArea == true)
-                {
-                    createdArea.SetOutside(CrossTrail);
-                }else if(firstArea == false)
-                {
-                    createdArea.SetOutside(previousArea);
-                }
+                //if (firstArea == true)
+                //{
+                //    createdArea.SetOutside(CrossTrail);
+                //}else if(firstArea == false)
+                //{
+                //    createdArea.SetOutside(previousArea);
+                //}
 
                 SetTime();
             }
@@ -147,22 +215,26 @@ namespace MagicMountain
             }
         }
 
-        void GoBack()
+        public void GoBack()
         {
             string currentAreaID = currentArea.GetAreaID();
             int.TryParse(currentAreaID, out int parsedID);
             int destinationID = parsedID - 2;
 
-            currentArea = areaArray[destinationID];
-            SetTime();
             if (destinationID < 0)
             {
                 currentArea = CrossTrail;
+                SetTime();
+            }
+            else
+            {
+                currentArea = areaArray[destinationID];
+                SetTime();
             }
         }
 
         //TIME METHODS
-        void SetTime()
+        public void SetTime()
         {
             minutes = 0;
             hour++;
@@ -185,7 +257,7 @@ namespace MagicMountain
             SetClock();
         }
 
-        void SetClock()
+        public void SetClock()
         {
             if(noon == true)
             {
@@ -219,7 +291,7 @@ namespace MagicMountain
 
         }
 
-        void SetSky()
+        public void SetSky()
         { if(clear == true)
             {
                 if (hour >= 0 && hour < 6 || hour >= 20)
@@ -241,7 +313,7 @@ namespace MagicMountain
             }
         }
 
-        void SetWeather()
+        public void SetWeather()
         {
             Random forecast = new Random();
             int weather = forecast.Next(1, 10);
@@ -367,13 +439,13 @@ namespace MagicMountain
             day = 1;
         }
 
-        void UpdateGarden(Garden _garden)
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                _garden.
-            }
-        }
+        //void UpdateGarden(Garden _garden)
+        //{
+        //    for (int i = 0; i < 10; i++)
+        //    {
+        //        _garden.
+        //    }
+        //}
 
         void EndGame()
         {

@@ -10,7 +10,6 @@ namespace MagicMountain
     {
         protected string areaID;
         protected int availItems;
-        Area myOutside;
         protected bool shopping = false;
         protected Item[] AreaItems = null;
 
@@ -33,14 +32,6 @@ namespace MagicMountain
         public void SetAreaID(string _ID)
         {
             areaID = _ID;
-        }
-        public Area GetOutside()
-        {
-            return myOutside;
-        }
-        public void SetOutside(Area _area)
-        {
-            myOutside = _area;
         }
 
         public bool CanShopHere()

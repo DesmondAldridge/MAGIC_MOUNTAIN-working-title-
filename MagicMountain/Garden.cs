@@ -6,11 +6,21 @@ using System.Threading.Tasks;
 
 namespace MagicMountain
 {
-    class Garden : Area
+    class Garden : Building
     {
         Plantable[] Plots = new Plantable[6];
         int availableIndex = 0;
         bool GardenFull = false;
+        bool GardenEmpty = true;
+
+        string GardeningReaction;
+        string GardenAlert1 = "The garden is full.";
+        string GardenAlert2 = "The garden is empty.";
+
+        public string GetGardeningReaction()
+        {
+            return GardeningReaction;
+        }
 
 
         public Plantable GetPlot(int num)
@@ -49,12 +59,21 @@ namespace MagicMountain
 
         public void Plant(Plantable _seed)
         {
-            Plots[availableIndex] = _seed;
-            availableIndex++;
-            if(availableIndex > 5)
+            if(GardenFull == false)
             {
-                GardenFull = true;
+                Plots[availableIndex] = _seed;
+                availableIndex++;
+                GardenEmpty = false;
+                if (availableIndex > 5)
+                {
+                    GardenFull = true;
+                }
             }
+            else
+            {
+                GardeningReaction = GardenAlert1;
+            }
+
         }
 
         public void RotateCrops(int num)
@@ -63,21 +82,40 @@ namespace MagicMountain
             {
                 Plots[r] = Plots[r + 1];
             }
+            availableIndex--;
+        }
+        public void CheckIfEmpty()
+        {
+            if (Plots[0] == null && Plots[1] == null && Plots[2] == null && Plots[3] == null && Plots[4] == null && Plots[5] == null)
+            {
+                GardenEmpty = true;
+            }
         }
 
         public Plantable SelectCrop(int num)
         {
-            Plantable SelectedCrop;
-            SelectedCrop = Plots[num];
-            Plots[num] = null;
-            RotateCrops(num);
+            Plantable SelectedCrop = null;
+
+            if (GardenEmpty == false)
+            {
+                SelectedCrop = Plots[num];
+                Plots[num] = null;
+                RotateCrops(num);
+                CheckIfEmpty();
+
+                return SelectedCrop;
+            }
+            else
+            {
+                GardeningReaction = GardenAlert2;
+            }
 
             return SelectedCrop;
         }
 
         public void ViewPlots()
         {
-            Console.Write("You are growing:");
+            Console.Write("I'm growing:");
 
             for (int i = 0; i < Plots.Length; i++)
             {

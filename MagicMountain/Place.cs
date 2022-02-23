@@ -8,60 +8,39 @@ namespace MagicMountain
 {
     class Place : Area
     {
-        Building building1;
-        Building building2;
-        Building building3;
-        Building building4;
-        Building building5;
-        Building building6;
+        Building[] BuildingsHere = new Building[3];
+
 
         public Building GetBuilding1()
         {
-            return building1;
+            return BuildingsHere[0];
         }
+
         public Building GetBuilding2()
         {
-            return building2;
+            return BuildingsHere[1];
         }
+
         public Building GetBuilding3()
         {
-            return building3;
+            return BuildingsHere[2];
         }
-        public Building GetBuilding4()
+
+        public string ViewPlace()
         {
-            return building4;
+            return $"{BuildingsHere[0].GetAreaID()}, {BuildingsHere[1].GetAreaID()}, & {BuildingsHere[2].GetAreaID()}";
+
         }
-        public Building GetBuilding5()
+        public void SetBuildings(Building _building1, Building _building2, Building _building3/*, Place _this*/)
         {
-            return building5;
+            BuildingsHere[0] = _building1;
+            BuildingsHere[1] = _building2;
+            BuildingsHere[2] = _building3;
+
+            BuildingsHere[0].SetOutside(this);
+            BuildingsHere[1].SetOutside(this);
+            BuildingsHere[2].SetOutside(this);
         }
-        public Building GetBuilding6()
-        {
-            return building6;
-        }
-        public void SetBuilding1(Building _building)
-        {
-            building1 = _building;
-        }
-        public void SetBuilding2(Building _building)
-        {
-            building2 = _building;
-        }
-        public void SetBuilding3(Building _building)
-        {
-            building3 = _building;
-        }
-        public void SetBuilding4(Building _building)
-        {
-            building4 = _building;
-        }
-        public void SetBuilding5(Building _building)
-        {
-            building5 = _building;
-        }
-        public void SetBuilding6(Building _building)
-        {
-            building6 = _building;
-        }
+
     }
 }

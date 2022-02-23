@@ -10,12 +10,32 @@ namespace MagicMountain
     {
         protected bool watered = false;
         protected int dryCounter = 0;
+
         protected bool ripe = false;
-        protected int growTime = 0;
+        protected bool spoiled = false;
+
+        protected int growCounter = 0;
+        protected int ripenTime = 0;
+        protected int decayCounter = 0;
+        protected int decayTime = 0;
+
+
+        protected string seedling = "";
+        protected string produce = "";
 
         public bool GetRipe()
         {
             return ripe;
+        }
+
+        public void SetRipen(int _num)
+        {
+            ripenTime = _num;
+        }
+
+        public void SetDecay(int _num)
+        {
+            ripenTime = _num;
         }
 
         public void ripen()
@@ -25,7 +45,12 @@ namespace MagicMountain
 
         public void spoil()
         {
-            ripe = false;
+            spoiled = true;
+        }
+
+        public bool GetSpoiled()
+        {
+            return spoiled;
         }
 
         public bool GetWatered()
@@ -46,11 +71,31 @@ namespace MagicMountain
 
         public int GetGrowTime()
         {
-            return growTime;
+            return growCounter;
         }
         public void SetGrowTime()
         {
-            growTime++;
+            growCounter++;
+
+            if(growCounter == ripenTime)
+            {
+                ripen();
+            }
+
+            Expiration();
+        }
+
+        public void Expiration()
+        {
+            if(ripe == true)
+            {
+                decayCounter++;
+
+                if(decayCounter == decayTime)
+                {
+                    spoil();
+                }
+            }
         }
 
         public int GetDryCounter()

@@ -10,9 +10,21 @@ namespace MagicMountain
     {
         static void Main(string[] args)
         {
+            Game MagicMountain = new Game();
 
+            //while (MagicMountain.GetIsPlaying())
+            //{
+                MagicMountain.Play();
+            //}
 
+            PressAKey();
+        }
 
+        static void PressAKey()
+        {
+            Console.SetCursorPosition(0, Console.WindowHeight - 1);
+            Console.Write("Press a key to continue");
+            Console.ReadKey();
         }
     }
 }

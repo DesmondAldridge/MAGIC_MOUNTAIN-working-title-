@@ -59,6 +59,7 @@
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Shop.cs" />
     <Compile Include="Water.cs" />
     <Compile Include="WellnessBerry.cs" />
     <Compile Include="Wilderness.cs" />

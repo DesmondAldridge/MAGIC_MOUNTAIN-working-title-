@@ -11,6 +11,7 @@ namespace MagicMountain
         protected string name;
         protected int nutrition;
         protected bool edible;
+        protected int price;
 
         public string GetName()
         {
@@ -25,6 +26,11 @@ namespace MagicMountain
         public int GetNutrition()
         {
             return nutrition;
+        }
+
+        public int GetPrice()
+        {
+            return price;
         }
     }
 }

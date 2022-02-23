@@ -8,16 +8,15 @@ namespace MagicMountain
 {
     class Player
     {
+        //HEALTH & DISPOSITION
         int Health = 100;
         int Energy = 100;
         int Nurishment = 100;
         int Hydration = 100;
 
-        Item[] Bag = new Item[8];
-
-        static public string food = "🍏";
-        static public string drink = "💧";
-        static public string energy = "💪";
+        string food = "🍏";
+        string drink = "💧";
+        string energy = "💪";
 
         bool WentToBed = false;
 
@@ -28,14 +27,19 @@ namespace MagicMountain
         bool PassedOut = false;
         bool Perished = false;
 
+        //ITEMS & THINGS
+        Item[] Bag = new Item[8];
+        int availableIndex = 0;
+        bool BagFull = false;
+        bool BagEmpty = true;
+        int Purse = 0;
+
         //FOR DISPLAY
         string Reaction;
 
         string FoodStatus;
         string DrinkStatus;
         string EnergyStatus;
-
-        //string Status = $"{food}{FoodStatus} ";
 
         //ALERTS
         string Notification1 = "I'm stuffed. I can't eat that now.";
@@ -44,6 +48,10 @@ namespace MagicMountain
         string Notification4 = "I don't think that's potable.";
         string Notification5 = "Yummy!";
         string Notification6 = "Ahhh. Refreshing.";
+
+        string Notification7 = "Oops, my bag is full.";
+        string Notification8 = "Oops, I don't have anything in my bag.";
+        string Notification9 = "Oops, I can't afford that.";
 
         string Alert1 = "I'm hungry. I need to eat.";
         string Alert2 = "I'm starving. I need to eat!";
@@ -54,10 +62,11 @@ namespace MagicMountain
 
         string AllGood = "";
 
-        //GETTERS
-        public string GetFoodStatus() { return FoodStatus; }
-        public string GetDrinkStatus() { return DrinkStatus; }
-        public string GetEnergyStatus() { return EnergyStatus; }
+        //HEALTH RELATED METHODS
+        //public string GetFoodStatus() { return FoodStatus; }
+        //public string GetDrinkStatus() { return DrinkStatus; }
+        //public string GetEnergyStatus() { return EnergyStatus; }
+        //Disposition
 
         public bool GetWentToBed() { return WentToBed; }
         public bool GetPassedOut() { return PassedOut;}
@@ -79,18 +88,6 @@ namespace MagicMountain
             return Hydration;
         }
 
-        public string GetReaction()
-        {
-            return Reaction;
-        }
-
-        public string GetStatus()
-        {
-            return $"{food}{FoodStatus} {drink}{DrinkStatus} {energy}{EnergyStatus}";
-        }
-
-
-        //HEALTH RELATED METHODS
         //Intake
         public void Eat(Item _item)
         {
@@ -141,7 +138,7 @@ namespace MagicMountain
             }
             else
             {
-                Energy = Energy;
+                Energy += 0;
             }
             
         }
@@ -171,6 +168,103 @@ namespace MagicMountain
             Energy -= 5;
         }
 
+        //BAG & ITEM METHODS
+        public void AdjustBag(int num)
+        {
+            for (int r = num; r < Bag.Length; r++)
+            {
+                Bag[r] = Bag[r + 1];
+            }
+            availableIndex--;
+        }
+
+        public void CheckIfEmpty()
+        {
+            if(Bag[0] == null && Bag[1] == null && Bag[2] == null && Bag[3] == null && Bag[4] == null && Bag[5] == null && Bag[6] == null && Bag[7] == null)
+            {
+                BagEmpty = true;
+            }
+        }
+
+        public Item SelectItem(int num)
+        {
+            Item SelectedItem = null;
+
+            if (BagEmpty == false)
+            {
+                SelectedItem = Bag[num];
+                Bag[num] = null;
+                AdjustBag(num);
+                CheckIfEmpty();
+            }
+            else
+            {
+                Reaction = Notification8;
+            }
+
+
+            return SelectedItem;
+        }
+
+        public void PutInBag(Item _Item)
+        {
+            if(BagFull == false)
+            {
+                Bag[availableIndex] = _Item;
+                availableIndex++;
+                BagEmpty = false;
+                if (availableIndex > 7)
+                {
+                    BagFull = true;
+                }
+            }
+            else
+            {
+                Reaction = Notification7;
+            }
+        }
+
+        //MONEY
+        public int GetPurse()
+        {
+            return Purse;
+        }
+        public void Spend(int _price)
+        {
+            if(Purse >= _price)
+            {
+                Purse -= _price;
+            }
+            else
+            {
+                Reaction = Notification9;
+            }
+
+        }
+        public void Earn(int _pay)
+        {
+            Purse -= _pay;
+        }
+
+        //GARDEN METHODS
+
+
+
+        //DISPLAY METHODS
+        public string GetReaction()
+        {
+            return Reaction;
+        }
+
+        public string GetStatus()
+        {
+            return $"{food}{FoodStatus} {drink}{DrinkStatus} {energy}{EnergyStatus}";
+        }
+
+        public void SetReaction(string _reaction)
+        {
+            Reaction = _reaction;
+        }
 
         public void UpdateStatus()
         {
@@ -209,51 +303,30 @@ namespace MagicMountain
             {
                 EnergyStatus = Alert5;
             }
-            if(Energy <= 15)
+            if (Energy <= 15)
             {
                 EnergyStatus = Alert6;
             }
 
-            if(Nurishment <= 0)
+            if (Nurishment <= 0)
             {
                 Health -= 10;
             }
-            if(Hydration <= 0)
+            if (Hydration <= 0)
             {
                 Health -= 25;
             }
-            if(Energy <= 0)
+            if (Energy <= 0)
             {
                 Health -= 5;
                 PassedOut = true;
             }
 
-            if(Health <= 0)
+            if (Health <= 0)
             {
                 Perished = true;
             }
         }
-
-        //BAG & ITEM METHODS
-
-        public void AdjustBag(int num)
-        {
-            for (int r = num; r < Bag.Length; r++)
-            {
-                Bag[r] = Bag[r + 1];
-            }
-        }
-
-        public Item SelectItem(int num)
-        {
-            Item SelectedItem;
-            SelectedItem = Bag[num];
-            Bag[num] = null;
-            AdjustBag(num);
-
-            return SelectedItem;
-        }
-
 
     }
 }
