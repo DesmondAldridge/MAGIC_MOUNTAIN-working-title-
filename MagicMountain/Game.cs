@@ -10,6 +10,7 @@ namespace MagicMountain
     {
         //GAME VARIABLES
         bool isPlaying = true;
+        bool SetUp = true;
 
         //TIME VARIABLES
         int minutes = 0;
@@ -46,8 +47,10 @@ namespace MagicMountain
         Player player = new Player();
         string thoughts = "💭";
         string currentView;
+        string currentPlayerStatus;
 
-        string PermaOptions = "Please Choose: '1' Eat, '2' Drink, '3' Cancel";
+        string RefreshOptions = "Please Choose: '1' Eat, '2' Drink, '3' Cancel";
+        string WhichItemToEat = "Please select item from your bag to eat";
 
         //string MakingSelection = "Scroll through by pressing '8' & hit enter to select";
         //string Selected;
@@ -154,7 +157,8 @@ namespace MagicMountain
         public void Play()
         {
 
-            
+            Initiate();
+            UpdateDisplay();
 
             
 
@@ -229,6 +233,17 @@ namespace MagicMountain
             //FestivalGrounds.Operational(hour);
             //FestivalGrounds.HoursOfOperation(9, 17);
         }
+
+        public void Initiate()
+        {
+            if (SetUp == true)
+            {
+                BuildWorld();
+                currentArea = Homestead;
+            }
+            SetUp = false;
+        }
+
         public void BuildWorld()
         {
             SetUpHome();
@@ -247,6 +262,7 @@ namespace MagicMountain
             Console.WriteLine($"Current Location: {currentArea.GetAreaID()}");
             Console.WriteLine($"{currentArea.GetDescription()}");
             Console.WriteLine();
+            Console.WriteLine($"{currentPlayerStatus}");
             Console.WriteLine($"{thoughts} {player.GetReaction()}");
             Console.WriteLine();
             Console.WriteLine();
@@ -380,22 +396,39 @@ namespace MagicMountain
                 Console.WriteLine(GardenTertiaryOptions);
                 string SecondInput = UserChoice();
 
-                Plantable CropToHarvest = HomeGarden.(SecondInput);
+                Plantable CropToHarvest = HomeGarden.SelectCrop(SecondInput);
                 player.PutInBag(CropToHarvest);
+                Action();
 
             }
             else if (Input == "4")
             {
+                ExitBuilding();
+                Action();
 
             } else if (Input == "5")
             {
+                Console.WriteLine(RefreshOptions);
+                string RefreshInput = UserChoice();
+                if(RefreshInput == "1")
+                {
+                    Console.WriteLine(WhichItemToEat);
+                    string WhatToEat = UserChoice();
+                    Item SelectedSnack = player.SelectItem(WhatToEat);
 
-            } else if (Input == "6")
+                    player.Eat(SelectedSnack);
+                    Action();
+                } else if (RefreshInput == "2")
+                {
+                    player.SipCanteen();
+                    Action();
+                } else if (RefreshInput == "3")
+                {
+                    Action();
+                }
+            }else
             {
-
-            } else
-            {
-                Console.Write(" Invalid Input! ")
+                Console.Write(" Invalid Input! ");
             }
 
         }
@@ -641,11 +674,17 @@ namespace MagicMountain
             {
                 SetTime();
             }
+
+            player.Depletion();
+            player.UpdateStatus();
+            currentPlayerStatus = player.GetStatus();
+            CheckHealth();
         }
 
         //CALENDAR METHODS
         void NewDay()
         {
+            player.WakeUp();
             day++;
             SetWeather();
             SetSky();
@@ -731,13 +770,30 @@ namespace MagicMountain
             day = 1;
         }
 
-        //void UpdateGarden(Garden _garden)
-        //{
-        //    for (int i = 0; i < 10; i++)
-        //    {
-        //        _garden.
-        //    }
-        //}
+        //PLAYER METHODS
+        public void CheckHealth()
+        {
+            if(player.GetPassedOut() == true)
+            {
+                GoToBed();
+                hour++;
+            }
+            if(player.GetPerished() == true)
+            {
+                EndGame();
+            }
+        }
+
+        public void GoToBed()
+        {
+            player.Sleep();
+            currentArea = Homestead;
+            player.UpdateStatus();
+            NewDay();
+            minutes = 0;
+            hour = 6;
+            SetClock();
+        }
 
         public void ToTheBottom()
         {

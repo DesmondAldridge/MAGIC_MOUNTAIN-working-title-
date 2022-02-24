@@ -44,6 +44,7 @@ namespace MagicMountain
         bool CanteenEmpty = true;
 
         Plantable SeedBag;
+
         
         int Purse = 0;
 
@@ -79,11 +80,6 @@ namespace MagicMountain
         string AllGood = "";
 
         //HEALTH RELATED METHODS
-        //public string GetFoodStatus() { return FoodStatus; }
-        //public string GetDrinkStatus() { return DrinkStatus; }
-        //public string GetEnergyStatus() { return EnergyStatus; }
-        //Disposition
-
         public bool GetWentToBed() { return WentToBed; }
         public bool GetPassedOut() { return PassedOut;}
         public bool GetPerished() { return Perished; }
@@ -103,6 +99,11 @@ namespace MagicMountain
         {
             return Hydration;
         }
+
+        //public void CheckHealth()
+        //{
+        //    if(passed)
+        //}
 
         //Intake
         public void Eat(Item _item)
@@ -182,6 +183,13 @@ namespace MagicMountain
         public void Exertion()
         {
             Energy -= 5;
+        }
+
+        public void Depletion()
+        {
+            Digest();
+            Dehydrate();
+            Exertion();
         }
 
         //BAG & ITEM METHODS
@@ -362,9 +370,6 @@ namespace MagicMountain
             Purse -= _pay;
         }
 
-        //GARDEN METHODS
-
-
 
         //DISPLAY METHODS
         public string GetReaction()
@@ -374,7 +379,7 @@ namespace MagicMountain
 
         public string GetStatus()
         {
-            return $"{food}{FoodStatus} {drink}{DrinkStatus} {energy}{EnergyStatus}";
+            return $"Health: {Health}  {food}{FoodStatus} {drink}{DrinkStatus} {energy}{EnergyStatus}";
         }
 
         public void SetReaction(string _reaction)
