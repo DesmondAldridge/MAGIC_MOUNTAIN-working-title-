@@ -86,7 +86,7 @@ namespace MagicMountain
 
         string HomeOptions = "Please Choose: '1' Enter your home, '2' Enter your garden, '3' Enter your corral, '4' Enter woods, '5' Refresh";
         string HomeSteadOptions = "Please Choose: '1' Go to bed, '2' Exit home, '3' Refresh";
-        string GardenOptions = "Please Choose: '1' View garden, '2' Water your crops, '3' Plant a seed, '4' Harvest a crop, '5' Exit garden, '6' Refresh";
+        string GardenOptions = "Please Choose: '1' Water your crops, '2' Plant a seed, '3' Harvest a crop, '4' Exit garden, '5' Refresh";
         string CorralOptions = "Please Choose: '1' View corral, '2' Stable new stock, '3' Take an animal with you, '4' Exit corral, '5' Refresh";
         string WellOptions;
 
@@ -345,58 +345,100 @@ namespace MagicMountain
 
 
         //OPTIONS METHODS
+        //string HomeOptions = "Please Choose: '1' Enter your home, '2' Enter your garden, '3' Enter your corral, '4' Enter woods, '5' Refresh";
+        //string HomeSteadOptions = "Please Choose: '1' Go to bed, '2' Exit home, '3' Refresh";
+        
+        //string CorralOptions = "Please Choose: '1' View corral, '2' Stable new stock, '3' Take an animal with you, '4' Exit corral, '5' Refresh";
+        //string WellOptions;
         public void OptionsHome()
         {
-            UserChoice();
+            string Input = UserChoice();
         }
         public void OptionsHomestead()
         {
-            UserChoice();
+            string Input = UserChoice();
         }
         public void OptionsGarden()
         {
-            UserChoice();
+            //string GardenOptions = "Please Choose: '1' Water your crops, '2' Plant a seed, '3' Harvest a crop, '4' Exit garden, '5' Refresh";
+            Console.WriteLine(GardenOptions);
+            string Input = UserChoice();
+            if (Input == "1")
+            {
+                HomeGarden.WaterPlots();
+                player.SpillCanteen();
+                Action();
+
+            } else if (Input == "2")
+            {
+                HomeGarden.Plant(player.GetSeedBag());
+                player.SetSeedBag(null);
+                Action();
+
+            } else if (Input == "3")
+            {
+                Console.WriteLine(GardenTertiaryOptions);
+                string SecondInput = UserChoice();
+
+                Plantable CropToHarvest = HomeGarden.(SecondInput);
+                player.PutInBag(CropToHarvest);
+
+            }
+            else if (Input == "4")
+            {
+
+            } else if (Input == "5")
+            {
+
+            } else if (Input == "6")
+            {
+
+            } else
+            {
+                Console.Write(" Invalid Input! ")
+            }
+
         }
         public void OptionsCorral()
         {
-            UserChoice();
+            string Input = UserChoice();
         }
         public void OptionsCrossTrail()
         {
-            UserChoice();
+            string Input = UserChoice();
         }
         public void OptionsWilderness()
         {
-            UserChoice();
+            string Input = UserChoice();
         }
         public void OptionsBlackwingStreet()
         {
-            UserChoice();
+            string Input = UserChoice();
         }
         public void OptionsMainStreet()
         {
-            UserChoice();
+            string Input = UserChoice();
         }
         public void OptionsNightGardenLane()
         {
-            UserChoice();
+            string Input = UserChoice();
         }
         public void OptionsApocathery()
         {
-            UserChoice();
+            string Input = UserChoice();
             Apocathery.GetWare1().GetName();
         }
         public void OptionsFaeRiverBridge()
         {
-            UserChoice();
+            string Input = UserChoice();
         }
         public void OptionsArbor()
         {
-            UserChoice();
+            string Input = UserChoice();
         }
         public void OptionsUnicornRanch()
         {
-            UserChoice();
+            string Input = UserChoice();
         }
 
 
@@ -720,6 +762,13 @@ namespace MagicMountain
 
         public void myDeBug()
         {
+            //Console.WriteLine(GardenSecondaryOptions);
+            //string SecondInput = UserChoice();
+
+            //Item SeedToPlant = player.SelectItem(SecondInput);
+
+
+
             //currentArea = Apocathery;
             //EnterBuilding(Apocathery);
             //WhereAmI();
@@ -729,7 +778,7 @@ namespace MagicMountain
             //ExitBuilding();
             //WhereAmI();
 
-            
+
 
             //CreateArea();
             //WhereAmI();

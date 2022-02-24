@@ -12,6 +12,7 @@ namespace MagicMountain
         int availableIndex = 0;
         bool GardenFull = false;
         bool GardenEmpty = true;
+        bool ValidInput1 = false;
 
         string GardeningReaction;
         string GardenAlert1 = "The garden is full.";
@@ -92,26 +93,36 @@ namespace MagicMountain
             }
         }
 
-        public Plantable SelectCrop(int num)
+
+        public Plantable SelectCrop(string _num)
         {
             Plantable SelectedCrop = null;
 
-            if (GardenEmpty == false)
+            ValidInput1 = int.TryParse(_num, out int num);
+
+            if(ValidInput1 == false)
             {
-                SelectedCrop = Plots[num];
-                Plots[num] = null;
-                RotateCrops(num);
-                CheckIfEmpty();
+                Console.WriteLine("Invalid Input!");
             }
             else
             {
-                GardeningReaction = GardenAlert2;
+                if (GardenEmpty == false)
+                {
+                    SelectedCrop = Plots[num];
+                    Plots[num] = null;
+                    RotateCrops(num);
+                    CheckIfEmpty();
+                }
+                else
+                {
+                    GardeningReaction = GardenAlert2;
+                }
             }
 
             return SelectedCrop;
         }
 
-        public void WaterGarden()
+        public void WaterPlots()
         {
             for (int i = 0; i < Plots.Length; i++)
             {
