@@ -32,7 +32,14 @@ namespace MagicMountain
         int availableIndex = 0;
         bool BagFull = false;
         bool BagEmpty = true;
+
+        Water[] Canteen = new Water[10];
+        int CanteenBackIndex = 10;
+        bool CanteenFull = false;
+        bool CanteenEmpty = true;
+        
         int Purse = 0;
+
         Livestock OnLead = null;
 
         //FOR DISPLAY
@@ -53,6 +60,7 @@ namespace MagicMountain
         string Notification7 = "Oops, my bag is full.";
         string Notification8 = "Oops, I don't have anything in my bag.";
         string Notification9 = "Oops, I can't afford that.";
+        string Notification10 = "Oops, my canteen is empty.";
 
         string Alert1 = "I'm hungry. I need to eat.";
         string Alert2 = "I'm starving. I need to eat!";
@@ -110,6 +118,61 @@ namespace MagicMountain
                 Reaction = Notification1;
             }
 
+        }
+        public void FillCanteen()
+        {
+            Water WellWater1 = new Water();
+            Water WellWater2 = new Water();
+            Water WellWater3 = new Water();
+            Water WellWater4 = new Water();
+            Water WellWater5 = new Water();
+            Water WellWater6 = new Water();
+            Water WellWater7 = new Water();
+            Water WellWater8 = new Water();
+            Water WellWater9 = new Water();
+            Water WellWater10 = new Water();
+
+            Canteen[0] = WellWater1;
+            Canteen[1] = WellWater2;
+            Canteen[2] = WellWater3;
+            Canteen[3] = WellWater4;
+            Canteen[4] = WellWater5;
+            Canteen[5] = WellWater6;
+            Canteen[6] = WellWater7;
+            Canteen[7] = WellWater8;
+            Canteen[8] = WellWater9;
+            Canteen[9] = WellWater10;
+
+            CanteenFull = true;
+            CanteenEmpty = false;
+        }
+        public void SipCanteen()
+        {
+            Water Sip = null;
+
+            if (CanteenEmpty == false)
+            {
+                Sip = Canteen[0];
+                Canteen[CanteenBackIndex] = null;
+                CanteenFull = false;
+                CanteenWaterLevelLower();
+                CheckCanteen();
+            }
+            else
+            {
+                Reaction = Notification8;
+            }
+
+            Drink(Sip);
+        }
+        public void CanteenWaterLevelLower()
+        {
+            for (int w = 0; w < Canteen.Length; w++)
+            {
+                Bag[w] = Bag[w + 1];
+            }
+
+            CanteenBackIndex--;
         }
         public void Drink(Liquid _liquid)
         {
@@ -187,6 +250,14 @@ namespace MagicMountain
             }
         }
 
+        public void CheckCanteen()
+        {
+            if (Canteen[0] == null && Canteen[1] == null && Canteen[2] == null && Canteen[3] == null && Canteen[4] == null && Canteen[5] == null && Canteen[6] == null && Canteen[7] == null && Canteen[8] == null && Canteen[9] == null)
+            {
+                CanteenEmpty = true;
+            }
+        }
+
         public Item SelectItem(int num)
         {
             Item SelectedItem = null;
@@ -195,6 +266,7 @@ namespace MagicMountain
             {
                 SelectedItem = Bag[num];
                 Bag[num] = null;
+                BagFull = false;
                 AdjustBag(num);
                 CheckIfEmpty();
             }

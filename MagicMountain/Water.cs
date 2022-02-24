@@ -8,7 +8,7 @@ namespace MagicMountain
 {
     class Water : Liquid
     {
-        Water()
+        public Water()
         {
             hydro = 15;
             potable = true;

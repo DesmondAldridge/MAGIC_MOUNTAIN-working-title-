@@ -111,6 +111,17 @@ namespace MagicMountain
             return SelectedCrop;
         }
 
+        public void WaterGarden()
+        {
+            for (int i = 0; i < Plots.Length; i++)
+            {
+                if (Plots[i] != null)
+                {
+                    Plots[i].water();
+                }
+            }
+        }
+
         public void ViewPlots()
         {
             Console.Write("I'm growing:");

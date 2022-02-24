@@ -82,11 +82,13 @@ namespace MagicMountain
         Building Grotto = new Building();
         Garden HomeGarden = new Garden();
         Corral HomeCorral = new Corral();
+        Building HomeWell = new Building();
 
         string HomeOptions = "Please Choose: '1' Enter your home, '2' Enter your garden, '3' Enter your corral, '4' Enter woods, '5' Refresh";
         string HomeSteadOptions = "Please Choose: '1' Go to bed, '2' Exit home, '3' Refresh";
         string GardenOptions = "Please Choose: '1' View garden, '2' Water your crops, '3' Plant a seed, '4' Harvest a crop, '5' Exit garden, '6' Refresh";
         string CorralOptions = "Please Choose: '1' View corral, '2' Stable new stock, '3' Take an animal with you, '4' Exit corral, '5' Refresh";
+        string WellOptions;
 
         string GardenSecondaryOptions = $"Please select which seed you would like plant: ";
         string GardenTertiaryOptions = $"Please select which crop you would like to harvest: ";
@@ -96,39 +98,53 @@ namespace MagicMountain
         //WOODS VARIABLES
         Place CrossTrail = new Place();
 
-        string CrossTrailOptions = "Please Choose: '1' Go west into the wilderness, '2' Go north into town, '3' Go south back home";
+        string CrossTrailOptions = "Please Choose: '1' Go west into the wilderness, '2' Go north into town, '3' Go south back home, '4' Refresh";
 
         //RAVEN FEATHER VILLAGE
         //Bottom & Top
         Place BlackwingStreet = new Place();
         Place Uptown = new Place();
 
-        string BlackwingStreetOptions = "Please Choose: '1' Enter Cauldron Way, '2' Enter Main Street, '3' Enter Night Garden Lane, '4' Exit town due south";
-        string UptownOptions;
+        string BlackwingStreetOptions = "Please Choose: '1' Enter Cauldron Way, '2' Enter Main Street, '3' Enter Night Garden Lane, '4' Exit town due south, '5' Refresh";
+        string UptownOptions = "Please Choose: '1' Go north of town, '2' Back to Cauldron Way, '3' Back to Main Street, '4' Back to Night Garden Lane, '5' Refresh";
 
         //West, Mid, & East
         Place CauldronWay = new Place();
         Place MainStreet = new Place();
         Place NightGardenLane = new Place();
 
-        string CauldronWayOptions = "Please Choose: '1' Apocathery, '2' Head uptown, '3' Head south back to Blackwing Street";
-        string MainStreetOptions = "Please Choose: '1' Head uptown, '2' Head south back to Blackwing Street";
-        string NightGardenLaneOptions = "Please Choose: '1' Head uptown, '2' Head south back to Blackwing Street";
+        string CauldronWayOptions = "Please Choose: '1' Apocathery, '2' Head uptown, '3' Head south back to Blackwing Street, '4' Refresh";
+        string MainStreetOptions = "Please Choose: '1' Head uptown, '2' Head south back to Blackwing Street, '3' Refresh";
+        string NightGardenLaneOptions = "Please Choose: '1' Head uptown, '2' Head south back to Blackwing Street, '3' Refresh";
 
         //Cauldron Way
         Shop Stables = new Shop();
+        Shop Smithy = new Shop();
         Shop Apocathery = new Shop();
+        Shop SorceryShop = new Shop();
 
         string ApocatheryOptions = "Please Choose: '1' Buy items, '2' Sell items, '3' Exit apocathery";
+        string ApocatheryBuyOptions = $"What would you like to buy? '1' , '2' , '3', '4'";
+        string ApocatherySellOptions = $"What would you like to sell? '1' , '2' , '3', '4', '5', '6', '7', '8'";
+
+        //Main Street
+        Shop Flowershop = new Shop();
+        Shop Bakery = new Shop();
+        Shop GardenSupplies = new Shop();
+        Shop Cafe = new Shop();
 
         //North of Town
         Place FaeRiverBridge = new Place();
         Place Arbor = new Place();
         Ranch UnicornRanch = new Ranch();
+        Building Lodge = new Building();
+        Building MayorManse = new Building();
+        Ranch FestivalGrounds = new Ranch();
 
-        string FaeRiverBridgeOptions;
-        string ArboOptions;
+        string FaeRiverBridgeOptions = "Please Choose: '1' Go north to the Arbor District, '2' Head back south into town, '3' Refresh";
+        string ArborOptions = "Please Choose: '1' Enter Unicorn Ranch, '2' Head back south, '3' Refresh";
         string UnicornRanchOptions;
+        string FestivalGroundOptions;
 
         public bool GetIsPlaying()
         {
@@ -148,26 +164,83 @@ namespace MagicMountain
         }
 
         //SETUP
+        public void SetUpHome()
+        {
+            Home.SetAreaID("Home");
+            Home.SetDescription("Home sweet home!");
+            Home.SetBuildings(Homestead, HomeGarden, HomeCorral, HomeWell);
+
+            Homestead.SetAreaID("House");
+            HomeGarden.SetAreaID("Garden");
+            HomeCorral.SetAreaID("Corral");
+            HomeWell.SetAreaID("Well");
+
+            Homestead.SetDescription("My beautiful homestead underneath a hill... comfy chair, roaring fireplace, tree roots for a ceiling... so cozy!");
+            HomeGarden.SetDescription("My humble little garden, where I can grow magical produce.");
+            HomeCorral.SetDescription("My corral, where I keep & breed magical livestock.");
+            HomeWell.SetDescription("My old family well.");
+        }
         public void SetUpCrossTrail()
         {
             CrossTrail.SetAreaID("Cross Trail");
+            CrossTrail.SetDescription("Sign post reads: 'Wilderness to the east', 'Dragon cave to the west' & 'Raventree Village to the north'...");
+        }
+
+        public void SetUpRaventreeVillage()
+        {
+            BlackwingStreet.SetAreaID("Blackwing Street");
+            CauldronWay.SetAreaID("Cauldron Way");
+            MainStreet.SetAreaID("MainStreet");
+            NightGardenLane.SetAreaID("Night Garden Lane");
+            Uptown.SetAreaID("Uptown");
+
+            BlackwingStreet.SetDescription("The cross town street that spans the southern edge of town.");
+            CauldronWay.SetDescription("Western most avenue of town. A lot of trade and craft persons have set up shop here.");
+            MainStreet.SetDescription("Middle most avenue of town. This is where I'll find plant & produce related shops.");
+            NightGardenLane.SetDescription("Eastern most avenue of town. Nothing here but fancy residents.");
+            Uptown.SetDescription("The northern edge of town. Looks like Town Hall, the Green Door Tavern, Church, & Library are all closed!");
+
+            CauldronWay.SetBuildings(Stables, Smithy, Apocathery, SorceryShop);
+            MainStreet.SetBuildings(GardenSupplies, Flowershop, Bakery, Cafe);
+
+            Apocathery.SetAreaID("Apocathery");
+            Apocathery.SetDescription("Ah, I love the calming sound of bubbling cauldrons.");
+            Apocathery.Operational(hour);
+            Apocathery.HoursOfOperation(9, 17);
+
+
+        }
+        public void SetUpArbor()
+        {
+            FaeRiverBridge.SetAreaID("Fae River Bridge");
+            FaeRiverBridge.SetDescription("The old wooden bridge amidst the tree line, spanning the brook that separates Raventree Village & the Arbor District.");
+            Arbor.SetAreaID("Arbor");
+            Arbor.SetDescription("The area above town that features Unicorn Ranch, the Pointy Hat Club Lodge, the Mayor's House, & the Festival Grounds.");
+
+            Arbor.SetBuildings(UnicornRanch, Lodge, MayorManse, FestivalGrounds);
+
+            UnicornRanch.SetAreaID("Unicorn Ranch");
+            UnicornRanch.SetOpen("close");
+            //UnicornRanch.Operational(hour);
+            //UnicornRanch.HoursOfOperation(9, 17);
+
+            FestivalGrounds.SetAreaID("Arbor");
+            FestivalGrounds.SetDescription("Ah, the faire grounds where holiday festivals & wizard tourneys are held... not to mention magical beasts best in show!");
+            //FestivalGrounds.Operational(hour);
+            //FestivalGrounds.HoursOfOperation(9, 17);
         }
         public void BuildWorld()
         {
-            Home.SetAreaID("Home");
-            CrossTrail.SetAreaID("Cross Trail");
-
-            CauldronWay.SetAreaID("Cauldron Way");
-            Apocathery.SetAreaID("Apocathery");
-            UnicornRanch.SetAreaID("Unicorn Ranch");
-            Apocathery.SetOutside(CauldronWay);
-
-
+            SetUpHome();
+            SetUpCrossTrail();
+            SetUpRaventreeVillage();
+            SetUpArbor();
         }
 
         public void UpdateDisplay()
         {
             Console.Clear();
+            Console.WriteLine($"Day {day} of Month {month}");
             Console.WriteLine($"{timeSym} {clock}");
             Console.WriteLine($"{currentSky} {currentWeather}");
             Console.WriteLine();
@@ -177,9 +250,38 @@ namespace MagicMountain
             Console.WriteLine($"{thoughts} {player.GetReaction()}");
             Console.WriteLine();
             Console.WriteLine();
-            Console.WriteLine($" Computer                     cards()");
+            Console.WriteLine();
         }
 
+        private string UserChoice()
+        {
+            bool ValidInput = false;
+
+            //ToTheBottom();
+
+            Console.Write("What would you like to do:? ");
+
+            string _UserChoice = null;
+
+            while (ValidInput == false)
+            {
+                string Input = Console.ReadLine();
+                if (Input == "1" || Input == "2" || Input == "3" || Input == "4" || Input == "5" || Input == "6" || Input == "7" || Input == "8" || Input == "9")
+                {
+                    ValidInput = true;
+                    _UserChoice = Input;
+                }
+                else
+                {
+                    Console.Write(" Invalid input! ");
+
+                }
+            }
+
+            return _UserChoice;
+        }
+
+        //OPTIONS METHODS
         public void DisplayOptions()
         {
             ToTheBottom();
@@ -245,55 +347,56 @@ namespace MagicMountain
         //OPTIONS METHODS
         public void OptionsHome()
         {
-
+            UserChoice();
         }
         public void OptionsHomestead()
         {
-
+            UserChoice();
         }
         public void OptionsGarden()
         {
-
+            UserChoice();
         }
         public void OptionsCorral()
         {
-
+            UserChoice();
         }
         public void OptionsCrossTrail()
         {
-
+            UserChoice();
         }
         public void OptionsWilderness()
         {
-
+            UserChoice();
         }
         public void OptionsBlackwingStreet()
         {
-
+            UserChoice();
         }
         public void OptionsMainStreet()
         {
-
+            UserChoice();
         }
         public void OptionsNightGardenLane()
         {
-
+            UserChoice();
         }
         public void OptionsApocathery()
         {
-
+            UserChoice();
+            Apocathery.GetWare1().GetName();
         }
         public void OptionsFaeRiverBridge()
         {
-
+            UserChoice();
         }
         public void OptionsArbor()
         {
-
+            UserChoice();
         }
         public void OptionsUnicornRanch()
         {
-
+            UserChoice();
         }
 
 
@@ -509,6 +612,14 @@ namespace MagicMountain
             {
                 NewMonth();
             }
+
+            HomeGarden.NextDay();
+
+            if(raining == true)
+            {
+                HomeGarden.RainDay();
+            }
+            //HomeCorral.NextDay();
         }
 
         void NewMonth()
